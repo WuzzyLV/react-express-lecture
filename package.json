@@ -3,12 +3,20 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "concurrently --names \"server,client\" --prefix \"[{name}]\" --prefix-colors \"green.bold,#840cb3.bold\" \"npm run server\" \"npm run client\"",
     "server": "cd backend && npm run dev",
     "client": "cd frontend && npm run dev",
     "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install"
   },
   "devDependencies": {
     "concurrently": "^8.0.1"
+  },
+  "concurrently": {
+    "prefix": "src",
+    "prefixColor": "yellow",
+    "colors": {
+      "server": "green",
+      "client": "blue"
+    }
   }
 }
