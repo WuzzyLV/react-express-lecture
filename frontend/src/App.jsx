@@ -1,8 +1,10 @@
+import { TextField } from './components/TextField';
+
 const App = () => {
   return (
-    <>
-      <div className='text-5xl'>Hello world!</div>
-    </>
+    <div className='container mx-auto'>
+      <TextField />
+    </div>
   );
 };
 
