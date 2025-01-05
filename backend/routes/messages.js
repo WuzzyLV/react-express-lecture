@@ -9,6 +9,18 @@ router.get("/", async (req, res) => {
   res.send(messages);
 });
 
+router.get("/can-send", async (req, res) => {
+  const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const existingMessage = await MessageSchema.findOne({
+    ip: ip,
+    createdAt: { $gte: new Date(Date.now() - MESSAGE_COOLDOWN) },
+  });
+  res.send({
+    canSend: !existingMessage,
+    timeToWait: existingMessage ? MESSAGE_COOLDOWN - (Date.now() - existingMessage.createdAt) : 0,
+  });
+});
+
 router.post("/", async (req, res) => {
   const { title, message } = req.body;
   const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
