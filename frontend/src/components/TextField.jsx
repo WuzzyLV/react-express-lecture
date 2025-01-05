@@ -46,6 +46,7 @@ export const TextField = () => {
             name='title'
             className='w-full border-none outline-none bg-black p-2'
             onChange={handleTitleChange}
+            required
           />
         </div>
         <div className='relative border border-[#999999] p-2 '>
@@ -61,6 +62,7 @@ export const TextField = () => {
             value={message}
             className='w-full p-2 border-none outline-none bg-black max-h-[100px]'
             onChange={handleMessageChange}
+            required
           />
         </div>
         <Button disabled={!canSend.canSend} type={'submit'}>
