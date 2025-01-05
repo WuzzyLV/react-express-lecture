@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const { title, message } = req.body;
-  ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
   const existingMessage = await MessageSchema.findOne({
     ip,
