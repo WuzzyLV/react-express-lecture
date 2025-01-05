@@ -5,7 +5,7 @@ const router = express.Router();
 const MESSAGE_COOLDOWN = 10 * 1000; // 1hour
 
 router.get("/", async (req, res) => {
-  const messages = await MessageSchema.find();
+  const messages = await MessageSchema.find({}, { ip: 0, __v: 0, updatedAt: 0 }).sort({ createdAt: -1 });
   res.send(messages);
 });
 
