@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import { Button } from "./Button";
+import React, { useContext, useEffect, useState } from 'react';
+import { Button } from './Button';
+import { MessageContext } from '../context/useMessages';
+import { msToTime } from '../utils/timeConversion';
 
 export const TextField = () => {
-  const [title, setTitle] = useState(null);
-  const [message, setMessage] = useState(null);
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
+  const { handleSubmit, canSend, time, errors, success } =
+    useContext(MessageContext);
 
   const handleMessageChange = (e) => {
     setMessage(e.target.value);
@@ -12,38 +16,55 @@ export const TextField = () => {
     setTitle(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      title,
-      message,
-    };
-    fetch("http://localhost:5173/api/messages", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-    }).then((data) => console.log(data));
+    handleSubmit(title, message);
+    setMessage('');
+    setTitle('');
   };
 
   return (
-    <section className="max-w-3xl border-[#999999] border mx-auto mt-20 text-white">
-      <form className="flex flex-col p-4 gap-4" onSubmit={handleSubmit}>
-        <div className="relative border border-[#999999] p-2">
-          <label htmlFor="name" className="absolute -top-3 left-2 bg-black px-1 text-lg font-bold">
+    <section className='max-w-3xl border-[#999999] border mx-auto mt-20 text-white'>
+      <form className='flex flex-col p-4 gap-4' onSubmit={onSubmit}>
+        {errors && (
+          <div className='w-full bg-error text-center py-2'>{errors}</div>
+        )}{' '}
+        {success && (
+          <div className='w-full bg-success text-center py-2'>{success}</div>
+        )}
+        <div className='relative border border-[#999999] p-2'>
+          <label
+            htmlFor='name'
+            className='absolute -top-3 left-2 bg-black px-1 text-lg font-bold'
+          >
             Title
           </label>
-          <input type="text" id="title" name="title" className="w-full border-none outline-none bg-black p-2" onChange={handleTitleChange} />
+          <input
+            value={title}
+            type='text'
+            id='title'
+            name='title'
+            className='w-full border-none outline-none bg-black p-2'
+            onChange={handleTitleChange}
+          />
         </div>
-        <div className="relative border border-[#999999] p-2 ">
-          <label htmlFor="message" className="absolute -top-3 left-2 bg-black px-1 text-lg font-bold">
+        <div className='relative border border-[#999999] p-2 '>
+          <label
+            htmlFor='message'
+            className='absolute -top-3 left-2 bg-black px-1 text-lg font-bold'
+          >
             Message
           </label>
-          <textarea id="message" name="message" className="w-full p-2 border-none outline-none bg-black max-h-[100px]" onChange={handleMessageChange} />
+          <textarea
+            id='message'
+            name='message'
+            value={message}
+            className='w-full p-2 border-none outline-none bg-black max-h-[100px]'
+            onChange={handleMessageChange}
+          />
         </div>
-        <Button disabled={true} type={"submit"}>
-          Submit
+        <Button disabled={!canSend.canSend} type={'submit'}>
+          {canSend ? (time > 0 ? msToTime(time) : 'Submit') : 'Submit'}
         </Button>
       </form>
     </section>
