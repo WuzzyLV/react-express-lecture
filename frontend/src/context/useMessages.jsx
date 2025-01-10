@@ -1,4 +1,4 @@
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect } from "react";
 
 export const MessageContext = createContext();
 
@@ -6,11 +6,11 @@ export const MessageProvider = ({ children }) => {
   const [messages, setMessages] = useState();
   const [canSend, setCanSend] = useState({});
   const [errors, setErrors] = useState();
-  const [success, setSucces] = useState();
+  const [success, setSuccess] = useState();
   const [time, setTime] = useState(canSend ? canSend.timeToWait : 0);
 
   const fetchMessages = async () => {
-    await fetch('http://localhost:5173/api/messages')
+    await fetch("http://localhost:5173/api/messages")
       .then((res) => res.json())
       .then((data) => {
         setMessages(data);
@@ -21,7 +21,7 @@ export const MessageProvider = ({ children }) => {
   };
 
   const fetchCanSend = async () => {
-    await fetch('http://localhost:5173/api/messages/can-send')
+    await fetch("http://localhost:5173/api/messages/can-send")
       .then((res) => res.json())
       .then((data) => {
         setCanSend(data);
@@ -48,16 +48,16 @@ export const MessageProvider = ({ children }) => {
 
   const handleSubmit = async (title, message) => {
     setErrors();
-    setSucces();
+    setSuccess();
     const data = {
       title,
       message,
     };
-    await fetch('http://localhost:5173/api/messages', {
-      method: 'POST',
+    await fetch("http://localhost:5173/api/messages", {
+      method: "POST",
       body: JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
+        "Content-Type": "application/json; charset=UTF-8",
       },
     })
       .then((res) => {
@@ -70,7 +70,7 @@ export const MessageProvider = ({ children }) => {
       })
       .then((data) => {
         if (data) {
-          setSucces(data.message);
+          setSuccess(data.message);
           fetchMessages();
           fetchCanSend();
         }
@@ -94,7 +94,9 @@ export const MessageProvider = ({ children }) => {
         canSend,
         time,
         errors,
+        setErrors,
         success,
+        setSuccess,
       }}
     >
       {children}
