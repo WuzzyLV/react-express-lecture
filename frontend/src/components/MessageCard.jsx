@@ -43,7 +43,6 @@ export const MessageCard = ({
       </span>
       <Voting
         count={count}
-        id={id}
         userVote={userVote}
         onUpvote={handleUpvote}
         onDownvote={handleDownvote}

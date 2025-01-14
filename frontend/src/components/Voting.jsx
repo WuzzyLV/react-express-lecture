@@ -5,7 +5,7 @@ import { MessageContext } from '../context/useMessages';
 import { UpvoteFill } from './UpvoteFill';
 import { DownvoteFill } from './DownvoteFill';
 
-export const Voting = ({ count, id, userVote, onUpvote, onDownvote }) => {
+export const Voting = ({ count, userVote, onUpvote, onDownvote }) => {
   return (
     <span className='flex gap-2 absolute -bottom-3 left-2 bg-black px-2 items-center'>
       <span
