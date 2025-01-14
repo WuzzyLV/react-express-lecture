@@ -1,26 +1,29 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Upvote } from './Upvote';
 import { Downvote } from './Downvote';
+import { MessageContext } from '../context/useMessages';
+import { UpvoteFill } from './UpvoteFill';
+import { DownvoteFill } from './DownvoteFill';
 
-export const Voting = ({ count }) => {
-  const [voteCount, setVoteCount] = useState(count);
-
-  const handleUpvote = () => {
-    setVoteCount(voteCount + 1);
-  };
-
-  const handleDownVote = () => {
-    setVoteCount(voteCount - 1);
-  };
-
+export const Voting = ({ count, id, userVote, onUpvote, onDownvote }) => {
   return (
     <span className='flex gap-2 absolute -bottom-3 left-2 bg-black px-2 items-center'>
-      <span onClick={handleUpvote} className='cursor-pointer'>
-        <Upvote />
+      <span
+        onClick={() => {
+          onUpvote();
+        }}
+        className='cursor-pointer'
+      >
+        {userVote && userVote === true ? <UpvoteFill /> : <Upvote />}
       </span>
-      <span className='text-white'>{voteCount}</span>
-      <span className='cursor-pointer' onClick={handleDownVote}>
-        <Downvote />
+      <span className='text-white'>{count}</span>
+      <span
+        className='cursor-pointer'
+        onClick={() => {
+          onDownvote();
+        }}
+      >
+        {userVote === false ? <DownvoteFill /> : <Downvote />}
       </span>
     </span>
   );
