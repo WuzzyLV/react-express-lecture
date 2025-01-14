@@ -5,12 +5,22 @@ const router = express.Router();
 const MESSAGE_COOLDOWN = 10 * 1000; // 1hour
 
 router.get("/", async (req, res) => {
+  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   const messages = await MessageSchema.find({}, { ip: 0, __v: 0, updatedAt: 0 }).sort({ createdAt: -1 });
-  res.send(messages);
+  const messagesWithCounts = messages.map((message) => {
+    const { upvotes, downvotes, ...rest } = message.toObject();
+    return {
+      ...rest,
+      upvotes: upvotes ? upvotes.length : 0,
+      downvotes: downvotes ? downvotes.length : 0,
+      userVote: message.hasUpvoted(ip),
+    };
+  });
+  res.send(messagesWithCounts);
 });
 
 router.get("/can-send", async (req, res) => {
-  const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   const existingMessage = await MessageSchema.findOne({
     ip: ip,
     createdAt: { $gte: new Date(Date.now() - MESSAGE_COOLDOWN) },
@@ -23,7 +33,7 @@ router.get("/can-send", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const { title, message } = req.body;
-  const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
   if (!title || !message) {
     return res.status(400).send({

@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import messages from "./routes/messages.js";
+import votes from "./routes/votes.js";
 import MessageSchema from "./schemas/MessageSchema.js";
 
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 
 // Routes //
 app.use("/messages", messages);
+app.use("/votes", votes);
 
 mongoose
   .connect(process.env.MONGO_URI, {
