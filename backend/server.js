@@ -14,6 +14,10 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+app.get("/", async (req, res) => {
+  res.send("Hello World!");
+});
+
 // Routes //
 app.use("/messages", messages);
 app.use("/votes", votes);
