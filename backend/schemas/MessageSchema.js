@@ -14,6 +14,7 @@ const MessageSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // MAKE AT FIRST WIHTOUT UPVOTES
     upvotes: {
       type: [String],
       default: [],

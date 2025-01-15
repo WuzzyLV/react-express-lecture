@@ -6,7 +6,10 @@ const MESSAGE_COOLDOWN = 10 * 1000; // 1hour
 
 router.get("/", async (req, res) => {
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-  const messages = await MessageSchema.find({}, { ip: 0, __v: 0, updatedAt: 0 }).sort({ createdAt: -1 });
+  const messages = await MessageSchema.find(
+    {},
+    { ip: 0, __v: 0, updatedAt: 0 }
+  ).sort({ createdAt: -1 });
   const messagesWithCounts = messages.map((message) => {
     const { upvotes, downvotes, ...rest } = message.toObject();
     return {
@@ -17,6 +20,13 @@ router.get("/", async (req, res) => {
     };
   });
   res.send(messagesWithCounts);
+
+  // initial version, second statement is for what to append
+  res.send(
+    await MessageSchema.find({}, { ip: 0, __v: 0, updatedAt: 0 }).sort({
+      createdAt: -1,
+    })
+  );
 });
 
 router.get("/can-send", async (req, res) => {
@@ -27,7 +37,9 @@ router.get("/can-send", async (req, res) => {
   });
   res.send({
     canSend: !existingMessage,
-    timeToWait: existingMessage ? MESSAGE_COOLDOWN - (Date.now() - existingMessage.createdAt) : 0,
+    timeToWait: existingMessage
+      ? MESSAGE_COOLDOWN - (Date.now() - existingMessage.createdAt)
+      : 0,
   });
 });
 
@@ -47,7 +59,8 @@ router.post("/", async (req, res) => {
   });
 
   if (existingMessage) {
-    const waitTime = MESSAGE_COOLDOWN - (Date.now() - existingMessage.createdAt);
+    const waitTime =
+      MESSAGE_COOLDOWN - (Date.now() - existingMessage.createdAt);
     return res.status(400).send({
       error: "You have already sent a message recently.",
       timeToWait: Math.max(0, waitTime),
