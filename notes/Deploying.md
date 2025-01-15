@@ -21,12 +21,12 @@ server {
     }
 
     location /api/ {
-        proxy_pass http://localhost:XXXXXXXXXXXXXXXXXXXXXX/;
+        proxy_pass http://localhost:XXXXXXXXXXXXXXX/;
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
+        proxy_set_header Connection '';
+        proxy_set_header Proxy '';
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
     error_page 404 /index.html;
@@ -37,4 +37,3 @@ server {
 14. `sudo systemctl restart nginx`
 15. `sudo certbot --nginx -d lecture1.wuzzy.software 
 16. 
-/var/www/react-express-lecture/frontend/dist
