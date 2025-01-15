@@ -18,7 +18,7 @@ app.get("/", async (req, res) => {
   const headerIp = req.headers["x-forwarded-for"];
   const remoteIp = req.socket.remoteAddress;
 
-  res.send("Hello World!", headerIp, remoteIp);
+  res.send({ msg: "Hello World!", headerIp, remoteIp });
 });
 
 // Routes //
