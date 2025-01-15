@@ -3,8 +3,6 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import messages from './routes/messages.js';
-import votes from './routes/votes.js';
 
 dotenv.config();
 
