@@ -1,8 +1,14 @@
+import { ErrorCard } from "./components/ErrorCard";
+import { MessageBoard } from "./components/MessageBoard";
+import { TextField } from "./components/TextField";
+
 const App = () => {
   return (
-    <>
-      <div className='text-5xl'>Hello world!</div>
-    </>
+    <div className="max-w-3xl mx-auto px-2">
+      <ErrorCard />
+      <TextField />
+      <MessageBoard />
+    </div>
   );
 };
 

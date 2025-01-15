@@ -3,14 +3,20 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import messages from "./routes/messages.js";
+import votes from "./routes/votes.js";
+import MessageSchema from "./schemas/MessageSchema.js";
 
-dotenv.config(); // Load environment variables from .env file
+dotenv.config();
 
 const app = express();
-const PORT = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
+
+// Routes //
+app.use("/messages", messages);
+app.use("/votes", votes);
 
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -18,15 +24,8 @@ mongoose
   })
   .then(() => {
     console.log("MongoDB connected");
+    app.listen(process.env.PORT || 3000);
   })
   .catch((err) => {
     console.error("MongoDB connection error:", err);
   });
-
-app.use("/hello", (req, res) => {
-  res.send("Hello World");
-});
-
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});

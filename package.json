@@ -10,13 +10,5 @@
   },
   "devDependencies": {
     "concurrently": "^8.0.1"
-  },
-  "concurrently": {
-    "prefix": "src",
-    "prefixColor": "yellow",
-    "colors": {
-      "server": "green",
-      "client": "blue"
-    }
   }
 }
