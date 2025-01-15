@@ -15,7 +15,10 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/", async (req, res) => {
-  res.send("Hello World!");
+  const headerIp = req.headers["x-forwarded-for"];
+  const remoteIp = req.socket.remoteAddress;
+
+  res.send("Hello World!", headerIp, remoteIp);
 });
 
 // Routes //
