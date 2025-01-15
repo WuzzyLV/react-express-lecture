@@ -1,4 +1,4 @@
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect } from "react";
 
 export const MessageContext = createContext();
 
@@ -10,11 +10,11 @@ export const MessageProvider = ({ children }) => {
   const [time, setTime] = useState(canSend ? canSend.timeToWait : 0);
 
   const handleVote = async (id, upvote) => {
-    await fetch(`http://localhost:5173/api/votes/`, {
-      method: 'POST',
+    await fetch(`/api/votes/`, {
+      method: "POST",
       body: JSON.stringify({ id, upvote }),
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
+        "Content-Type": "application/json; charset=UTF-8",
       },
     })
       .then((res) => {
@@ -36,7 +36,7 @@ export const MessageProvider = ({ children }) => {
   };
 
   const fetchMessages = async () => {
-    await fetch('http://localhost:5173/api/messages')
+    await fetch("/api/messages")
       .then((res) => res.json())
       .then((data) => {
         setMessages(data);
@@ -47,7 +47,7 @@ export const MessageProvider = ({ children }) => {
   };
 
   const fetchCanSend = async () => {
-    await fetch('http://localhost:5173/api/messages/can-send')
+    await fetch("/api/messages/can-send")
       .then((res) => res.json())
       .then((data) => {
         setCanSend(data);
@@ -79,11 +79,11 @@ export const MessageProvider = ({ children }) => {
       title,
       message,
     };
-    await fetch('http://localhost:5173/api/messages', {
-      method: 'POST',
+    await fetch("/api/messages", {
+      method: "POST",
       body: JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
+        "Content-Type": "application/json; charset=UTF-8",
       },
     })
       .then((res) => {
